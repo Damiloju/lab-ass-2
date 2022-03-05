@@ -7,12 +7,12 @@
  * EFR32MG12 Wireless Gecko Reference Manual (Timer p672)
  * https://www.silabs.com/documents/public/reference-manuals/efr32xg12-rm.pdf
  *
- * Timer API documentation 
+ * Timer API documentation
  * https://docs.silabs.com/mcu/latest/efr32mg12/group-TIMER
- * 
+ *
  * ARM RTOS API
  * https://arm-software.github.io/CMSIS_5/RTOS2/html/group__CMSIS__RTOS.html
- * 
+ *
  * Copyright Thinnect Inc. 2019
  * Copyright ProLab TTÜ 2022
  * @license MIT
@@ -44,28 +44,61 @@
 #include "incbin.h"
 INCBIN(Header, "header.bin");
 
+static uint32_t timer_freq;
+void led_thread_attr(void *args);
 // Heartbeat thread, initialize Timer and print heartbeat messages.
-void hp_loop ()
+void hp_loop()
 {
-    #define ESWGPIO_HB_DELAY 10 // Heartbeat message delay, seconds
-    
+#define ESWGPIO_HB_DELAY 10 // Heartbeat message delay, seconds
+
+    // Initialize GPIO and set up pins for leds
+    led_gpio_init();
+
     // TODO Initialize Timer.
-    
+    timer_freq = timer0_init();
+
+    info1("Timer frequency %lu Hz", timer_freq);
+
+    // Create a thread for buzzer control.
+    const osThreadAttr_t led_thread_attr = {.name = "buz_onoff"};
+    osThreadNew(led_control_loop, NULL, &led_thread_attr);
+
     for (;;)
     {
-        osDelay(ESWGPIO_HB_DELAY*osKernelGetTickFreq());
+        osDelay(ESWGPIO_HB_DELAY * osKernelGetTickFreq());
         info1("Heartbeat");
     }
 }
 
-int logger_fwrite_boot (const char *ptr, int len)
+void led_control_loop(void *args)
+{
+#define DUTY_CYCLE_DELAY 2000 // ms
+
+    for (;;)
+    {
+        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
+        timer0_set_top_val(50);
+        info1("dc 50");
+        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
+        timer0_set_top_val(25);
+        info1("dc 25");
+        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
+        timer0_set_top_val(0);
+        info1("dc 0");
+        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
+        timer0_set_top_val(75);
+        info1("dc 75");
+    }
+}
+
+int logger_fwrite_boot(const char *ptr, int len)
 {
     fwrite(ptr, len, 1, stdout);
     fflush(stdout);
     return len;
 }
 
-int main ()
+int main()
 {
     PLATFORM_Init();
 
@@ -73,13 +106,13 @@ int main ()
     RETARGET_SerialInit();
     log_init(BASE_LOG_LEVEL, &logger_fwrite_boot, NULL);
 
-    info1("ESW-Timer "VERSION_STR" (%d.%d.%d)", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
+    info1("ESW-Timer " VERSION_STR " (%d.%d.%d)", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
     // Initialize OS kernel.
     osKernelInitialize();
 
     // Create a thread.
-    const osThreadAttr_t hp_thread_attr = { .name = "hp" };
+    const osThreadAttr_t hp_thread_attr = {.name = "hp"};
     osThreadNew(hp_loop, NULL, &hp_thread_attr);
 
     if (osKernelReady == osKernelGetState())
@@ -96,5 +129,6 @@ int main ()
         err1("!osKernelReady");
     }
 
-    for(;;);
+    for (;;)
+        ;
 }

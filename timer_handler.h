@@ -16,14 +16,14 @@
 #define LED_GREEN_PORT gpioPortB // !< Port for green led.
 #define LED_BLUE_PORT gpioPortA  // !< Port for blue led.
 
-#define LED_RED_PIN 12                     // !< Pin for red led.
-#define LED_GREEN_PIN 11                   // !< Pin for green led.
-#define LED_BLUE_PIN 5                     // !< Pin for blue led.
-#define TIMER0_CLOCK_DIV timerPrescale1024 // Timer0 clock divider
-#define TIMER0_TOP_VAL 100                 // Timer0 top value
-#define LED_RED_LOCATION 0                 // !< Location for red led.
-#define LED_GREEN_LOCATION 0               // !< Location for green led.
-#define LED_BLUE_LOCATION 0                //      !< Location for blue led.
+#define LED_RED_PIN 12                                 // !< Pin for red led.
+#define LED_GREEN_PIN 11                               // !< Pin for green led.
+#define LED_BLUE_PIN 5                                 // !< Pin for blue led.
+#define TIMER0_CLOCK_DIV timerPrescale1024             // Timer0 clock divider
+#define TIMER0_TOP_VAL 100                             // Timer0 top value
+#define LED_RED_LOCATION TIMER_ROUTELOC0_CC0LOC_LOC7   // !< Location for red led.
+#define LED_GREEN_LOCATION TIMER_ROUTELOC0_CC0LOC_LOC6 // !< Location for green led.
+#define LED_BLUE_LOCATION TIMER_ROUTELOC0_CC0LOC_LOC7  //      !< Location for blue led.
 
 // Public functions
 void led_gpio_init();                 // Initialize GPIO and set up pins for leds

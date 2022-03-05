@@ -45,7 +45,7 @@
 INCBIN(Header, "header.bin");
 
 static uint32_t timer_freq;
-void led_thread_attr(void *args);
+void led_control_loop(void *args);
 // Heartbeat thread, initialize Timer and print heartbeat messages.
 void hp_loop()
 {

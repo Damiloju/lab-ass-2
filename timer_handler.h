@@ -23,7 +23,7 @@
 #define TIMER0_TOP_VAL 100                             // Timer0 top value
 #define LED_RED_LOCATION TIMER_ROUTELOC0_CC0LOC_LOC7   // !< Location for red led.
 #define LED_GREEN_LOCATION TIMER_ROUTELOC0_CC0LOC_LOC6 // !< Location for green led.
-#define LED_BLUE_LOCATION TIMER_ROUTELOC0_CC0LOC_LOC7  //      !< Location for blue led.
+#define LED_BLUE_LOCATION TIMER_ROUTELOC0_CC0LOC_LOC5  //      !< Location for blue led.
 
 // Public functions
 void led_gpio_init();             // Initialize GPIO and set up pins for leds

@@ -46,8 +46,8 @@ INCBIN(Header, "header.bin");
 
 static uint32_t timer_freq;
 void led_control_loop(void *args);
-uint32_t fade_step_size = 5; // Amount by which brightness is faded
-uint32_t brightness = 255;   // Maximum brightness
+int fade_step_size = 5;  // Amount by which brightness is faded
+uint32_t brightness = 0; // Maximum brightness
 // Heartbeat thread, initialize Timer and print heartbeat messages.
 void hp_loop()
 {
@@ -74,7 +74,7 @@ void hp_loop()
 
 void led_control_loop(void *args)
 {
-
+#define DUTY_CYCLE_DELAY 1000 // ms
     for (;;)
     {
         // Gradually increase or reduce the brightness of the LED.
@@ -88,8 +88,9 @@ void led_control_loop(void *args)
             fade_step_size = -fade_step_size;
         }
 
-        // delay for 20 os ticks
-        osDelay(20);
+        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
+        info1("brightness %lu", brightness);
+        info1("fade_step_size %lu", fade_step_size);
     }
 }
 

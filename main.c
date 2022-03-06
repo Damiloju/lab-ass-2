@@ -72,19 +72,22 @@ void hp_loop()
 
 void led_control_loop(void *args)
 {
-#define DUTY_CYCLE_DELAY 2000 // ms
 
     for (;;)
     {
-        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        duty_cycle_set(1000, 220, 50);
-        info1("dc 1000, 220, 50");
-        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        duty_cycle_set(500, 110, 25);
-        info1("dc 1000, 220, 50");
-        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        duty_cycle_set(0, 0, 0);
-        info1("dc 0 0 0");
+        // Gradually increase or reduce the brightness of the LED.
+        brightness = brightness + fade_step_size;
+        duty_cycle_set(brightness);
+
+        // switch the logic of the face amount based on if we are at the max of min
+        // fade amount logic was dubbed from the shared video
+        if (brightness <= 0 || brightness >= 255)
+        {
+            fade_step_size = -fade_step_size;
+        }
+
+        // delay for 20 os ticks
+        osDelay(20);
     }
 }
 

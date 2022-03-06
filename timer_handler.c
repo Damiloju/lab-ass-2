@@ -24,8 +24,6 @@ void led_gpio_init()
     CMU_ClockEnable(cmuClock_GPIO, true);
 
     // Set up LED pins
-    GPIO_PinModeSet(LED_RED_PORT, LED_RED_PIN, gpioModePushPull, 0);
-    GPIO_PinModeSet(LED_GREEN_PORT, LED_GREEN_PIN, gpioModePushPull, 0);
     GPIO_PinModeSet(LED_BLUE_PORT, LED_BLUE_PIN, gpioModePushPull, 0);
 }
 
@@ -44,23 +42,11 @@ uint32_t timer0_init(void)
     ccInit.cofoa = timerOutputActionToggle;
 
     // Initilize a CC channels for toggling leds.
-    TIMER_InitCC(TIMER0, 0, &ccInit); // channel 0
-    TIMER_InitCC(TIMER0, 1, &ccInit); // channel 1
     TIMER_InitCC(TIMER0, 2, &ccInit); // channel 2
 
     // Set same TIMER0 top value for all CC channels.
     TIMER_TopSet(TIMER0, TIMER0_TOP_VAL);
-    TIMER_CompareSet(TIMER0, 0, TIMER0_TOP_VAL); // Set compare starting value for channel 0
-    TIMER_CompareSet(TIMER0, 1, TIMER0_TOP_VAL); // Set compare starting value value for channel 1
     TIMER_CompareSet(TIMER0, 2, TIMER0_TOP_VAL); // Set compare starting value value for channel 2
-
-    // Channel 0 Enable GPIO toggling by TIMER and set location of led pins to be toggled.
-    TIMER0->ROUTEPEN = TIMER0->ROUTEPEN | TIMER_ROUTEPEN_CC0PEN;
-    TIMER0->ROUTELOC0 = TIMER0->ROUTELOC0 | LED_GREEN_LOCATION;
-
-    // Channel 1 Enable GPIO toggling by TIMER and set location of led pins to be toggled.
-    TIMER0->ROUTEPEN = TIMER0->ROUTEPEN | TIMER_ROUTEPEN_CC1PEN;
-    TIMER0->ROUTELOC0 = TIMER0->ROUTELOC0 | LED_RED_LOCATION;
 
     // Channel 2 Enable GPIO toggling by TIMER and set location of led pins to be toggled.
     TIMER0->ROUTEPEN = TIMER0->ROUTEPEN | TIMER_ROUTEPEN_CC2PEN;
@@ -78,9 +64,7 @@ uint32_t timer0_init(void)
 }
 
 // util function to set top value/duty cycle for timer0
-void duty_cycle_set(uint32_t dutyCycleChannel0, uint32_t dutyCycleChannel1, uint32_t dutyCycleChannel2)
+void duty_cycle_set(uint32_t dutyCycleChannel2)
 {
-    TIMER_CompareBufSet(TIMER0, 0, dutyCycleChannel0);
-    TIMER_CompareBufSet(TIMER0, 1, dutyCycleChannel1);
     TIMER_CompareBufSet(TIMER0, 2, dutyCycleChannel2);
 }

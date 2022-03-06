@@ -48,7 +48,9 @@ uint32_t timer0_init(void)
 
     // Enable GPIO toggling by TIMER and set location of led pins to be toggled.
     TIMER0->ROUTEPEN = TIMER_ROUTEPEN_CC0PEN;
-    TIMER0->ROUTELOC0 = LED_RED_LOCATION | LED_GREEN_LOCATION | LED_BLUE_LOCATION;
+    TIMER0->ROUTELOC0 = LED_RED_LOCATION;
+    TIMER0->ROUTELOC1 = LED_GREEN_LOCATION;
+    TIMER0->ROUTELOC2 = LED_BLUE_LOCATION;
 
     // Set same TIMER0 top value for all CC channels.
     TIMER_TopSet(TIMER0, TIMER0_TOP_VAL);

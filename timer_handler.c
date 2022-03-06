@@ -50,9 +50,9 @@ uint32_t timer0_init(void)
 
     // Set same TIMER0 top value for all CC channels.
     TIMER_TopSet(TIMER0, TIMER0_TOP_VAL);
-    TIMER_CompareSet(TIMER0, 0, TIMER0_TOP_VAL);      // Set compare starting value for channel 0
-    TIMER_CompareSet(TIMER0, 1, TIMER0_TOP_VAL - 10); // Set compare starting value value for channel 1
-    TIMER_CompareSet(TIMER0, 2, TIMER0_TOP_VAL - 20); // Set compare starting value value for channel 2
+    TIMER_CompareSet(TIMER0, 0, TIMER0_TOP_VAL); // Set compare starting value for channel 0
+    TIMER_CompareSet(TIMER0, 1, TIMER0_TOP_VAL); // Set compare starting value value for channel 1
+    TIMER_CompareSet(TIMER0, 2, TIMER0_TOP_VAL); // Set compare starting value value for channel 2
 
     // Channel 0 Enable GPIO toggling by TIMER and set location of led pins to be toggled.
     TIMER0->ROUTEPEN = TIMER0->ROUTEPEN | TIMER_ROUTEPEN_CC0PEN;
@@ -78,7 +78,9 @@ uint32_t timer0_init(void)
 }
 
 // util function to set top value/duty cycle for timer0
-void duty_cycle_set(uint32_t tv)
+void duty_cycle_set(uint32_t dutyCycleChannel0, uint32_t dutyCycleChannel1, uint32_t dutyCycleChannel2)
 {
-    TIMER_CompareBufSet(TIMER0, 0, tv);
+    TIMER_CompareBufSet(TIMER0, 0, dutyCycleChannel0);
+    TIMER_CompareBufSet(TIMER0, 1, dutyCycleChannel1);
+    TIMER_CompareBufSet(TIMER0, 2, dutyCycleChannel2);
 }

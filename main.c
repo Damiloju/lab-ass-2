@@ -76,18 +76,15 @@ void led_control_loop(void *args)
 
     for (;;)
     {
-        // osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        // duty_cycle_set(50);
-        // info1("dc 50");
-        // osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        // duty_cycle_set(25);
-        // info1("dc 25");
-        // osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        // duty_cycle_set(0);
-        // info1("dc 0");
-        // osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        // duty_cycle_set(75);
-        // info1("dc 75");
+        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
+        duty_cycle_set(1000, 220, 50);
+        info1("dc 1000, 220, 50");
+        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
+        duty_cycle_set(500, 110, 25);
+        info1("dc 1000, 220, 50");
+        osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
+        duty_cycle_set(0, 0, 0);
+        info1("dc 0 0 0");
     }
 }
 

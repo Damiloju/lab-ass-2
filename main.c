@@ -74,7 +74,7 @@ void hp_loop()
 
 void led_control_loop(void *args)
 {
-#define DUTY_CYCLE_DELAY 1000 // ms
+#define DUTY_CYCLE_DELAY 20 // ms
     for (;;)
     {
         // Gradually increase or reduce the brightness of the LED.
@@ -82,7 +82,7 @@ void led_control_loop(void *args)
         duty_cycle_set(brightness);
 
         // switch the logic of the face amount based on if we are at the max of min
-        // fade amount logic was dubbed from the shared video
+        // changing of fade step side logic was picked from the shared video
         if (brightness <= 0 || brightness >= 255)
         {
             fade_step_size = -fade_step_size;

@@ -46,8 +46,8 @@ INCBIN(Header, "header.bin");
 
 static uint32_t timer_freq;
 void led_control_loop(void *args);
-uint32_t fade_step_size 5; // Amount by which brightness is faded
-uint32_t brightness 255;   // Maximum brightness
+uint32_t fade_step_size = 5; // Amount by which brightness is faded
+uint32_t brightness = 255;   // Maximum brightness
 // Heartbeat thread, initialize Timer and print heartbeat messages.
 void hp_loop()
 {

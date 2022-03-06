@@ -55,16 +55,16 @@ uint32_t timer0_init(void)
     TIMER_CompareSet(TIMER0, 2, TIMER0_TOP_VAL - 20); // Set compare starting value value for channel 2
 
     // Channel 0 Enable GPIO toggling by TIMER and set location of led pins to be toggled.
-    TIMER0->ROUTEPEN = TIMER_ROUTEPEN_CC0PEN;
-    TIMER0->ROUTELOC0 = LED_GREEN_LOCATION;
+    TIMER0->ROUTEPEN = TIMER0->ROUTEPEN | TIMER_ROUTEPEN_CC0PEN;
+    TIMER0->ROUTELOC0 = TIMER0->ROUTELOC0 | LED_GREEN_LOCATION;
 
     // Channel 1 Enable GPIO toggling by TIMER and set location of led pins to be toggled.
-    TIMER0->ROUTEPEN = TIMER_ROUTEPEN_CC1PEN;
-    TIMER0->ROUTELOC0 = LED_RED_LOCATION;
+    TIMER0->ROUTEPEN = TIMER0->ROUTEPEN | TIMER_ROUTEPEN_CC1PEN;
+    TIMER0->ROUTELOC0 = TIMER0->ROUTELOC0 | LED_RED_LOCATION;
 
     // Channel 2 Enable GPIO toggling by TIMER and set location of led pins to be toggled.
-    TIMER0->ROUTEPEN = TIMER_ROUTEPEN_CC2PEN;
-    TIMER0->ROUTELOC0 = LED_BLUE_LOCATION;
+    TIMER0->ROUTEPEN = TIMER0->ROUTEPEN | TIMER_ROUTEPEN_CC2PEN;
+    TIMER0->ROUTELOC0 = TIMER0->ROUTELOC0 | LED_BLUE_LOCATION;
 
     // Timer general initialization and config.
     TIMER_Init_TypeDef timerInit = TIMER_INIT_DEFAULT;

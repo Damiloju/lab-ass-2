@@ -18,8 +18,6 @@
 #define TIMER0_CLOCK_DIV timerPrescale16              // Timer0 clock divider
 #define TIMER0_TOP_VAL 255                            // Timer0 top value
 #define LED_BLUE_LOCATION TIMER_ROUTELOC0_CC2LOC_LOC3 //      Location for blue led.
-#define fade_step_size 5                              // Amount by which brightness is faded
-#define brightness 255                                // Maximum brightness
 
 // Public functions
 void led_gpio_init();                            // Initialize GPIO and set up pins for leds

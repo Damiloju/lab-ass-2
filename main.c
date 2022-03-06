@@ -77,16 +77,16 @@ void led_control_loop(void *args)
     for (;;)
     {
         osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        timer0_set_top_val(50);
+        duty_cycle_set(50);
         info1("dc 50");
         osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        timer0_set_top_val(25);
+        duty_cycle_set(25);
         info1("dc 25");
         osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        timer0_set_top_val(0);
+        duty_cycle_set(0);
         info1("dc 0");
         osDelay(DUTY_CYCLE_DELAY * osKernelGetTickFreq() / 1000);
-        timer0_set_top_val(75);
+        duty_cycle_set(75);
         info1("dc 75");
     }
 }

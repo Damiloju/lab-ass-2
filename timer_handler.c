@@ -40,20 +40,19 @@ uint32_t timer0_init(void)
     // TODO Init
     // Init CC for Output Compare on GPIO pins.
     TIMER_InitCC_TypeDef ccInit = TIMER_INITCC_DEFAULT;
-    ccInit.mode = timerCCModeCompare;
-    ccInit.cmoa = timerOutputActionToggle;
+    ccInit.mode = timerCCModePWM;
+    ccInit.cofoa = timerOutputActionToggle;
 
     // Initilize a CC channels for toggling leds.
     TIMER_InitCC(TIMER0, 0, &ccInit);
+    // Set same TIMER0 top value for all CC channels.
+    TIMER_TopSet(TIMER0, TIMER0_TOP_VAL);
+    TIMER_CompareSet(TIMER0, 0, 100);
 
     // Enable GPIO toggling by TIMER and set location of led pins to be toggled.
     TIMER0->ROUTEPEN = TIMER_ROUTEPEN_CC0PEN;
     TIMER0->ROUTELOC0 = LED_RED_LOCATION;
-    TIMER0->ROUTELOC1 = LED_GREEN_LOCATION;
     TIMER0->ROUTELOC2 = LED_BLUE_LOCATION;
-
-    // Set same TIMER0 top value for all CC channels.
-    TIMER_TopSet(TIMER0, TIMER0_TOP_VAL);
 
     // Timer general initialization and config.
     TIMER_Init_TypeDef timerInit = TIMER_INIT_DEFAULT;
@@ -67,7 +66,7 @@ uint32_t timer0_init(void)
 }
 
 // util function to set top value/duty cycle for timer0
-void timer0_set_top_val(uint32_t tv)
+void duty_cycle_set(uint32_t tv)
 {
-    TIMER_TopBufSet(TIMER0, tv);
+    TIMER_CompareBufSet(TIMER0, 0, tv);
 }
